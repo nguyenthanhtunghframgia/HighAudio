@@ -15,12 +15,29 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+
+        externalNativeBuild {
+            cmake {
+                cppFlags.clear()
+            }
+        }
     }
 
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
+
+            ndk {
+                setAbiFilters(listOf("armeabi-v7a", "x86", "x86_64"))
+            }
+
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path = file("CMakeLists.txt")
         }
     }
 
@@ -48,4 +65,7 @@ dependencies {
     testImplementation("junit:junit:4.12")
     androidTestImplementation("com.android.support.test:runner:1.0.2")
     androidTestImplementation("com.android.support.test.espresso:espresso-core:3.0.2")
+    implementation("com.journeyapps:zxing-android-embedded:3.2.0@aar")
+    implementation("com.google.zxing:core:3.3.0")
+    implementation("pub.devrel:easypermissions:2.0.0")
 }
